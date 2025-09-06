@@ -1,0 +1,47 @@
+{% extends "blocks/base.html" %}
+{% block title %}quote.text | ShadrinQuotes{% endblock title %}
+{% block h1 %}Случайная цитата{% endblock h1 %}
+{% block random_quote_active %}active{% endblock random_quote_active %}
+{% block main %}
+    <div class="container">
+        {% if quote %}
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p><strong>{{ quote.text }}</strong></p>
+                        <p class="blockquote-footer">{{ quote.source }}</p>
+                    </blockquote>
+
+                    
+                    <table class="table table-sm table-borderless small text-muted w-auto mt-2">
+                    <tbody>
+                        <tr><td>Просмотров:</td><td>{{ quote.views }}</td></tr>
+                        <tr><td>Скольким понравилась:</td><td>{{ quote.likes }}</td></tr>
+                        <tr><td>Скольким не понравилась:</td><td>{{ quote.dislikes }}</td></tr>
+                    </tbody>
+                    </table>
+
+
+                    <div class="mt-3 d-flex flex-wrap gap-2">
+                        <form method="post" action="{% url 'like_quote' quote.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Нравится</button>
+                        </form>
+
+                        <form method="post" action="{% url 'dislike_quote' quote.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Не нравится</button>
+                        </form>
+
+                        <a class="btn btn-secondary" href="{% url 'random_quote' %}">Пропустить</a>
+
+                        <a href="{% url 'edit:change_quote' quote.id %}" class="btn btn-warning">Редактировать</a>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <p>Цитат пока нет, <a href="{% url 'edit:add_quote' %}">добавить</a></p>
+        {% endif %}
+    </div>
+{% endblock main %}

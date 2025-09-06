@@ -1,0 +1,44 @@
+{% extends "blocks/base.html" %}
+{% block title %}{% if is_new %}Добавление{% else %}Изменение{% endif %} | ShadrinQuotes{% endblock title %}
+{% block h1 %}{% if is_new %}Добавить цитату{% else %}Изменить цитату{% endif %}{% endblock h1 %}
+{% block new_quote_active %}{% if is_new %}active{% endif %}{% endblock new_quote_active %}
+{% block main %}
+    <div class="container">
+        {% if is_error %}
+            <div class="alert alert-danger" role="alert">
+                В форме были обнаружены ошибки!
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <p>
+                {% for error in form.text.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{ form.text.label_tag }}<br>{{ form.text }}
+            </p>
+            <p>
+                {% for error in form.source.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{ form.source.label_tag }}{{ form.source }}
+            </p>
+            <p>
+                {% for error in form.weight.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                {{ form.weight.label_tag }}{{ form.weight }}
+            </p>
+
+            <button class="btn btn-success" type="submit">{% if is_new %}Добавить{% else %}Сохранить изменения{% endif %}</button>
+            <a class="btn btn-secondary" href="{% url 'random_quote' %}">Отмена</a>
+        </form>
+
+        {% if not is_new %}
+            <a class="btn btn-danger remove-form" href="{% url 'edit:delete_quote' quote_id %}">Удалить</a>
+        {% endif %}
+
+    </div>
+{% endblock main %}

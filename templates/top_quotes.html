@@ -1,0 +1,50 @@
+{% extends "blocks/base.html" %}
+{% block title %}Лучшие цитаты | ShadrinQuotes{% endblock title %}
+{% block h1 %}Топ-10 цитат по мнению пользователей{% endblock h1 %}
+{% block top_quotes_active %}active{% endblock top_quotes_active %}
+{% block main %}
+    <div class="container">
+        <div class="mb-3">
+            <form method="get" class="row g-2">
+                <div class="col-md-5">
+                    <input type="text" 
+                        name="text" 
+                        value="{{ text_query }}" 
+                        class="form-control" 
+                        placeholder="Искать цитату по содержанию...">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" 
+                        name="source" 
+                        value="{{ source_query }}" 
+                        class="form-control" 
+                        placeholder="Искать цитату по источнику...">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Поиск</button>
+                </div>
+            </form>
+        </div>
+
+        {% for q in quotes %}
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p><strong>{{ q.text }}</strong></p>
+                        <p class="blockquote-footer">{{ q.source }}</p>
+                    </blockquote>
+                    
+                    <table class="table table-sm table-borderless small text-muted w-auto mt-2">
+                    <tbody>
+                        <tr><td>Просмотров:</td><td>{{ q.views }}</td></tr>
+                        <tr><td>Скольким понравилась:</td><td>{{ q.likes }}</td></tr>
+                        <tr><td>Скольким не понравилась:</td><td>{{ q.dislikes }}</td></tr>
+                    </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock main %}
